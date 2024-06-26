@@ -1,0 +1,36 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: hoe-bot
+    src: ./
+    engine: python3.9
+    primary: true
+    run: uvicorn main:app
+    dev: venv/bin/uvicorn main:app --reload
+    public_routes:
+      - "/"
+      - "/tg-webhook"
+    presets:
+      env:
+        - name: TELEGRAM_TOKEN
+          description: Telegram bot token
+        - name: WEBHOOK_URL
+          description: Site URL
+        - name: ROUTER_URL
+          description: Router URL for get status 
+        - name: STREET_ID
+          description: Street ID
+        - name: HOUSE
+          description: House number
+        - name: ALLOWED_CHAT_IDS
+          description: Allowed chat ids 321311,-232131
+        - name: NOTIFY_CHAT_IDS
+          description: Notify chat ids by default is ALLOWED_CHAT_IDS 
+        
+
+    actions:
+      - id: "check"
+        name: "check statuses"
+        description: "watch for new statuses"
+        trigger: "schedule"
+        default_interval: "5 minutes"
