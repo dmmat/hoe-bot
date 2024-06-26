@@ -77,6 +77,31 @@ async def set_webhook():
     }
 
     response = requests.post(url, params=params)
+    
+    # set commands
+    commands = [
+        {
+            "command": "queue",
+            "description": "Показати чергу"
+        },
+        {
+            "command": "schedule",
+            "description": "Показати графік відключень"
+        },
+        {
+            "command": "shutdown",
+            "description": "Показати чи є актуальні відключення"
+        },
+        {
+            "command": "status",
+            "description": "Перевірити чи є електроенергія в дома"
+        }
+    ]
+  
+    url = f"https://api.telegram.org/bot{TOKEN}/setMyCommands"
+    response2 = requests.post(url, json={"commands": commands})
+    
+    
     return response.json()
 
 
