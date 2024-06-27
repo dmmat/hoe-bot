@@ -1,7 +1,7 @@
 from ShutdownBot import ShutdownBot
 import requests
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel
 from Watchdog import *
 import os
@@ -24,7 +24,20 @@ class TelegramWebhook(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    shutdown = get_shutdown();
+    queue = get_queue();
+    schedule = get_schedule();
+    status = get_status();
+    html_result = f"""
+    <html>
+        <head> <title>Hoe Watchdog</title> <style> table {{ border-collapse: collapse; width: 100%; }} th, td {{ border: 1px solid black; padding: 8px; text-align: left; }} th {{ background-color: #f2f2f2; }} </style> </head>
+        <body> <h1>HOE Watchdog</h1> 
+        <table style="border-collapse: collapse; width: 100%;"> <tr> <th>Shutdown</th> <td>{shutdown}</td> </tr> <tr> <th>Queue</th> <td>{queue}</td> </tr> <tr> <th>Schedule</th> <td> <img src="{schedule}" style="width: 100%" alt="schedule"> </td> </tr>  </table> </body>
+        <h3> <a href="/sw"> Activate telegram webhook </a> </h3>
+    </html>
+    
+    """
+    return HTMLResponse(content=html_result)
 
 
 @app.post("/tg-webhook")
