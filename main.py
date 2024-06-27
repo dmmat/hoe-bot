@@ -109,12 +109,14 @@ async def set_webhook():
 async def space_actions(request: Request):
     data = await request.json()
     if data["event"] and data["event"]["id"] == "check":
-    
+        
         logging.info(data)
         NOTIFY_CHAT_IDS = os.getenv("NOTIFY_CHAT_IDS") or os.getenv("ALLOWED_CHAT_IDS") or []
         chats = list(map(int, NOTIFY_CHAT_IDS.split(",")))
         
         for chat_id in chats:
+            if chat_id == -1: 
+                continue
             status = check_home_server_status()
             if status_changed(status):
                 response_text = "Електроенергія є" if status else "Скоріше за все електроенергії немає \n/shutdown - перевірити відключення"

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import html2text
+import re
 
 class ShutdownBot:
     def __init__(self):
@@ -32,7 +33,14 @@ class ShutdownBot:
             'house': house
         }
         response = requests.post(url, headers=self.headers, data=data)
-        return convert_html_to_markdown(response.text)
+        text = convert_html_to_markdown(response.text)
+        if text.startswith("За вказаною адресою відсутнє зареєстроване"):
+            return "За обраною адресою відключення не зареєстроване"
+        if text.startswith("Вид робіт"):
+            regex = r"Вид робіт.*.\n.*.\n"
+            subst = ""
+            text = re.sub(regex, subst, text, 0, re.MULTILINE)
+        return text
 
     def get_shutdown_queue(self, street_id, house):
         url = f'{self.base_url}/shutdown-queues'
