@@ -55,7 +55,7 @@ class ShutdownBot:
         url = f'{self.base_url}/page/pogodinni-vidkljuchennja'
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'html.parser')
-        img_tag = soup.select_one('body main div:nth-of-type(2) div div:nth-of-type(1) div:nth-of-type(2) p:nth-of-type(1) img')
+        img_tag = soup.select_one('body main div:nth-of-type(2) div div:nth-of-type(1) div:nth-of-type(2) img')
         
         if img_tag:
             img_url = img_tag['src']
