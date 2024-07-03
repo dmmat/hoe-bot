@@ -1,5 +1,5 @@
 ## Можете встановити з deta та налаштувати просто конфіг
-https://deta.space/discovery/@dmat/hoebot/exp-8s9M 
+https://deta.space/discovery/@dmat/hoebot
 
 
 
